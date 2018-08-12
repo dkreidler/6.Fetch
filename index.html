@@ -74,14 +74,26 @@
             verse = verse.replace(" ", "");
             verse = verse.toLowerCase();
             var url = verse + '.txt';
-            var request = new XMLHttpRequest();
-            request.open('GET', url);
-            request.responseType = 'text';
-            request.onload = function() {
-                poemDisplay.textContent = request.response;
-            };
-            request.send();
-
+            /*
+            Invoke fetch, passing it the URL of the resource we want.
+            The .then() method is a part of promises, for asynch operations.
+            .fetch() returns a promis, which resolves to the response sent back
+            from the server. Then, .then() runs follow-up code, which is the
+            function we define inside of it. 
+            Equivalent of onload event in the old XHR version.
+            In the function, we run the .text() method on the response, which
+            returns the response as raw text. 
+            Equivalent of request.responseType = 'text' in XHR.
+            .text() also returns a promise, so we chain another .then() method,
+            where we create another function, set the textContent to the text
+            value of the returned function.
+            I think I need to read this 1000 times to actually absorb it...
+            */
+            fetch(url).then(function(response) {
+                response.text().then(function(text) {
+                    poemDisplay.textContent = text;
+                });
+            });
         };
         updateDisplay('Verse 1');
         verseChoose.value = 'Verse 1';
